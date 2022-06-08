@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 
 const QRCode = require('../models/qrcode');
+const User = require('../models/user');
 
 // @desc    Get QR codes
 // @route   GET /api/qrcodes
@@ -20,6 +21,7 @@ const setQrCode = asyncHandler(async (req, res) => {
     }
 
     const qrcode = await QRCode.create({
+        user: req.user.id,
         data: req.body.data
     })
 

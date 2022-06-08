@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
 const verifyJWT = require('./middleware/verifyJWT');
@@ -9,12 +10,14 @@ const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
 const port = process.env.PORT || 3001;
 
+connectDB();
+
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
-// app.use(credentials);
+app.use(credentials);
 
 // Cross Origin Resource Sharing
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -23,16 +26,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // middleware for cookies
-// app.use(cookieParser());
-
-connectDB();
+app.use(cookieParser());
 
 // routes
+app.get('^/$|/index(.html)?', (req, res) => res.sendStatus(403));
 app.use('/auth', require('./routes/auth'));
-app.use('/refresh', require('./routes/refresh'));
 
-// app.use(verifyJWT);
-app.use('/api/qrcodes', require('./routes/api/qrcodes'));
+app.use(verifyJWT);
+app.use('/api/qrcodes', require('./routes/qrcodes'));
+
+app.all('*', (req, res) => res.sendStatus(404));
 
 app.use(errorHandler);
 

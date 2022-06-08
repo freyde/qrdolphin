@@ -5,7 +5,7 @@ const {
     setQrCode,
     updateQrCode,
     deleteQrCode
-} = require('../../controllers/qrcodeController');
+} = require('../controllers/qrcodeController');
 
 router.route('/').get(getQrCodes).post(setQrCode);
 router.route('/:id').put(updateQrCode).delete(deleteQrCode);
