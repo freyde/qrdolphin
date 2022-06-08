@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.get('^/$|/index(.html)?', (req, res) => res.sendStatus(403));
+app.get('^/$|/index(.html)?', (req, res) => res.sendStatus(401));
 app.use('/auth', require('./routes/auth'));
 
 app.use(verifyJWT);
