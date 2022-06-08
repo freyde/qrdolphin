@@ -11,15 +11,15 @@ const userSchema = mongoose.Schema(
             required: true,
             unique: true
         },
-        email_verified_at: {
-            type: Date
-        },
         password: {
             type: String,
             required: true
         },
         token: {
             type: String
+        },
+        verifiedAt: {
+            type: Date
         },
     },
     {

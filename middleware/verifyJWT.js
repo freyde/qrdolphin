@@ -1,22 +1,23 @@
+const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
-const verifyJWT = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) return res.sendStatus(401);
-    // console.log(authHeader); // Bearer token
-    const token = authHeader.split(' ')[1];
-    jwt.verify(
-        token,
-        process.env.ACCESS_TOKEN_SECRET,
-        (err, decoded) => {
-            if (err) {
-                // console.log(err);
-                return res.sendStatus(403); // invalid token
-            }
-            req.user = decoded.id;
-            next();
-        }
-    );
-}
+const User = require('../models/user');
 
-module.exports = verifyJWT
+const protect = asyncHandler(async (req, res, next) => {
+    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
+        res.status(401);
+        throw new Error('Unauthorized, no token');
+    }
+
+    // Get token from the header
+    const token = req.headers.authorization.split(' ')[1];
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    // Get user from the token
+    req.user = await User.findById(decoded.id).select('-password');
+    next();
+})
+
+module.exports = protect

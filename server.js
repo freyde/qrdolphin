@@ -3,7 +3,6 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
-const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const errorHandler = require('./middleware/errorHandler');
@@ -31,10 +30,7 @@ app.use(cookieParser());
 // routes
 app.get('^/$|/index(.html)?', (req, res) => res.sendStatus(401));
 app.use('/auth', require('./routes/auth'));
-
-app.use(verifyJWT);
 app.use('/api/qrcodes', require('./routes/qrcodes'));
-
 app.all('*', (req, res) => res.sendStatus(404));
 
 app.use(errorHandler);

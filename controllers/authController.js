@@ -45,7 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     // Send email for account confirmation
-    const emailToken = generateToken(user._id, process.env.EMAIL_TOKEN_SECRET, '1d');
+    const emailToken = generateToken(user.id, process.env.EMAIL_TOKEN_SECRET, '1d');
     const url = `${process.env.APP_URL}/auth/verify/${emailToken}`;
     transporter.sendMail({
         from: `${process.env.MAIL_FROM_NAME} <${process.env.MAIL_FROM_ADDRESS}>`,
@@ -56,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
         res.status(201).json({
-            _id: user._id,
+            _id: user.id,
             name: user.name,
             email: user.email
         });
@@ -74,19 +74,19 @@ const verifyUser = asyncHandler(async (req, res) => {
 
     // Check if user already verified
     const user = await User.findById(decoded.id);
-    if (user?.email_verified_at) {
-        res.status(400);
-        throw new Error('User already verified');
+    if (user?.verifiedAt) {
+        return res.status(400).send('User already verified');
+        // throw new Error('User already verified');
     }
 
     // Verify user
-    await User.findByIdAndUpdate(decoded.id, { email_verified_at: Date.now() }, { new: true });
+    await User.findByIdAndUpdate(decoded.id, { verifiedAt: Date.now() }, { new: true });
 
     res.send('Your account has been verified');
 })
 
 // @desc    Authenticate a user
-// @route   GET /auth
+// @route   POST /auth/login
 // @access  Private
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -95,9 +95,15 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
     
     if (user && (await bcrypt.compare(password, user.password))) {
+        // Check if user is verified
+        if (!user?.verifiedAt) {
+            res.status(403);
+            throw new Error('User not verified');
+        }
+
         // create JWTs
-        const accessToken = generateToken(user._id, process.env.ACCESS_TOKEN_SECRET);
-        const refreshToken = generateToken(user._id, process.env.REFRESH_TOKEN_SECRET, '30d');
+        const accessToken = generateToken(user.id, process.env.ACCESS_TOKEN_SECRET);
+        const refreshToken = generateToken(user.id, process.env.REFRESH_TOKEN_SECRET, '30d');
 
         // Saving refreshToken with current user
         await User.findByIdAndUpdate(user.id, { token: refreshToken });
@@ -125,7 +131,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ token: refreshToken });
     if (user) {
         // Clear refreshToken of user
-        await User.findByIdAndUpdate(user._id, { token:'' });
+        await User.findByIdAndUpdate(user.id, { token:'' });
     }
 
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true }); // secure: true - only serves on https
@@ -148,8 +154,8 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            if (err || user._id !== decoded.id) return res.sendStatus(403);
-            const accessToken = generateToken(user._id, process.env.ACCESS_TOKEN_SECRET);
+            if (err || user.id !== decoded.id) return res.sendStatus(403);
+            const accessToken = generateToken(user.id, process.env.ACCESS_TOKEN_SECRET);
             res.json({ accessToken });
         }
     );
