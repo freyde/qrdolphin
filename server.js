@@ -6,14 +6,15 @@ const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const errorHandler = require('./middleware/errorHandler');
+const connectDB = require('./config/db');
 const port = process.env.PORT || 3001;
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
-app.use(credentials);
+// app.use(credentials);
 
 // Cross Origin Resource Sharing
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -22,13 +23,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // middleware for cookies
-app.use(cookieParser());
+// app.use(cookieParser());
+
+connectDB();
 
 // routes
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 
-app.use(verifyJWT);
+// app.use(verifyJWT);
 app.use('/api/qrcodes', require('./routes/api/qrcodes'));
 
 app.use(errorHandler);
