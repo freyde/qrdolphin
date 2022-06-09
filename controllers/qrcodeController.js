@@ -7,7 +7,7 @@ const User = require('../models/user');
 // @route   GET /api/qrcodes
 // @access  Private
 const getQrCodes = asyncHandler(async (req, res) => {
-    const qrcodes = await QRCode.find();
+    const qrcodes = await QRCode.find({ user: req.user.id });
     res.status(200).json(qrcodes);
 })
 
@@ -23,7 +23,7 @@ const setQrCode = asyncHandler(async (req, res) => {
     const qrcode = await QRCode.create({
         user: req.user.id,
         data: req.body.data
-    })
+    });
 
     res.status(200).json(qrcode);
 })
@@ -33,10 +33,15 @@ const setQrCode = asyncHandler(async (req, res) => {
 // @access  Private
 const updateQrCode = asyncHandler(async (req, res) => {
     const qrcode = await QRCode.findById(req.params.id);
-
     if (!qrcode) {
         res.status(400);
         throw new Error('QR code not found');
+    }
+
+    // Make sure the logged in user matches the QR code user
+    if (qrcode.user.toString() !== req.user.id) {
+        res.status(401);
+        throw new Error('Unauthorized user');
     }
 
     const updatedQrCode = await QRCode.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -49,10 +54,15 @@ const updateQrCode = asyncHandler(async (req, res) => {
 // @access  Private
 const deleteQrCode = asyncHandler(async (req, res) => {
     const qrcode = await QRCode.findById(req.params.id);
-
     if (!qrcode) {
         res.status(400);
         throw new Error('QR code not found');
+    }
+
+    // Make sure the logged in user matches the QR code user
+    if (qrcode.user.toString() !== req.user.id) {
+        res.status(401);
+        throw new Error('Unauthorized user');
     }
 
     await qrcode.remove();

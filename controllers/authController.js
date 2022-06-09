@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 // @desc    Register a new user
 // @route   POST /auth
-// @access  Private
+// @access  Public
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -68,7 +68,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // @desc    Verify a user
 // @route   GET /auth/verify/:token
-// @access  Private
+// @access  Public
 const verifyUser = asyncHandler(async (req, res) => {
     const decoded = jwt.verify(req.params.token, process.env.EMAIL_TOKEN_SECRET);
 
@@ -76,18 +76,18 @@ const verifyUser = asyncHandler(async (req, res) => {
     const user = await User.findById(decoded.id);
     if (user?.verifiedAt) {
         return res.status(400).send('User already verified');
-        // throw new Error('User already verified');
     }
 
     // Verify user
-    await User.findByIdAndUpdate(decoded.id, { verifiedAt: Date.now() }, { new: true });
+    user.verifiedAt = Date.now();
+    await user.save();
 
-    res.send('Your account has been verified');
+    res.status(200).send('Your account has been verified');
 })
 
 // @desc    Authenticate a user
 // @route   POST /auth/login
-// @access  Private
+// @access  Public
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -106,7 +106,8 @@ const loginUser = asyncHandler(async (req, res) => {
         const refreshToken = generateToken(user.id, process.env.REFRESH_TOKEN_SECRET, '30d');
 
         // Saving refreshToken with current user
-        await User.findByIdAndUpdate(user.id, { token: refreshToken });
+        user.token = refreshToken;
+        await user.save();
 
         // Creates Secure Cookie with refresh token
         res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
@@ -120,18 +121,18 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // @desc    Logout user
 // @route   GET /auth/logout
-// @access  Private
+// @access  Public
 const logoutUser = asyncHandler(async (req, res) => {
     // On client, also delete the accessToken
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); // No content
     const refreshToken = cookies.jwt;
-
-    // Is refreshToken in db?
+    
+    // Is refresh token in db?
     const user = await User.findOne({ token: refreshToken });
     if (user) {
-        // Clear refreshToken of user
-        await User.findByIdAndUpdate(user.id, { token:'' });
+        // Delete refresh token in db
+        await user.updateOne({ $unset: { token:1 } });
     }
 
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true }); // secure: true - only serves on https
@@ -140,16 +141,17 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 // @desc    Handle refresh token
 // @route   GET /auth/refresh
-// @access  Private
+// @access  Public
 const handleRefreshToken = asyncHandler(async (req, res) => {
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(401);
     const refreshToken = cookies.jwt;
 
+    // Is refresh token in db?
     const user = await User.findOne({ token: refreshToken });
     if (!user) return res.sendStatus(403); // Forbidden
 
-    // evaluate jwt
+    // Evaluate jwt
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
