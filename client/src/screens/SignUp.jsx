@@ -12,12 +12,16 @@ import {
   Pressable,
   Center,
   Hidden,
+  IconButton,
+  Icon,
   StatusBar,
   Stack,
   Box,
-  IconButton,
+  ScrollView
 } from 'native-base';
-import { ScrollView } from 'native-base';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 import IconGoogle from '../components/IconGoogle';
 import IconFacebook from '../components/IconFacebook';
 
@@ -122,6 +126,14 @@ export function SignUpForm({ props }) {
                       onPress={() => {
                         setShowPass(!showPass);
                       }}
+                      icon={
+                        <Icon
+                          size="4"
+                          color="coolGray.400"
+                          as={Entypo}
+                          name={showPass ? "eye-with-line" : "eye"}
+                        />
+                      }
                     />
                   }
                 />
@@ -151,6 +163,14 @@ export function SignUpForm({ props }) {
                       onPress={() => {
                         setShowConfirmPass(!showConfirmPass);
                       }}
+                      icon={
+                        <Icon
+                          size="4"
+                          color="coolGray.400"
+                          as={Entypo}
+                          name={showConfirmPass ? "eye-with-line" : "eye"}
+                        />
+                      }
                     />
                   }
                 />
@@ -379,6 +399,14 @@ export default function SignUp(props) {
                   onPress={() => {
                     props.navigation.goBack()
                   }}
+                  icon={
+                    <Icon
+                      size="6"
+                      as={AntDesign}
+                      name="arrowleft"
+                      color="coolGray.50"
+                    />
+                  }
                 />
                 <Text color="coolGray.50" fontSize="lg">
                   Sign Up

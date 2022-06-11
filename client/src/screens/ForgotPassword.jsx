@@ -9,12 +9,14 @@ import {
   Image,
   Hidden,
   IconButton,
+  Icon,
   Center,
   FormControl,
   StatusBar,
   Stack,
   Input,
 } from 'native-base';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function ForgotPassword(props) {
   const [text, setText] = useState('');
@@ -67,6 +69,14 @@ export default function ForgotPassword(props) {
                 onPress={() => {
                   props.navigation.goBack()
                 }}
+                icon={
+                  <Icon
+                    size="6"
+                    as={AntDesign}
+                    name="arrowleft"
+                    color="coolGray.50"
+                  />
+                }
               />
               <Text color="coolGray.50" fontSize="lg">
                 Forgot Password
