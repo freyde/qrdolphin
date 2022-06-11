@@ -26,8 +26,7 @@ qrdolphin allows you to create **Dynamic QR Codes** which enables you to dynamic
 * Location
 * Time
 
-Installation
-----------------
+## Installation
 You can choose one from multiple ways for installation.
 
 **GitHub**
@@ -36,8 +35,27 @@ You can choose one from multiple ways for installation.
 ```
 git clone https://github.com/kanamui/qrdolphin.git
 ```
+Then, in both root and client folder run:
+```
+yarn install
+```
 
-License
-----------
+## Run/Build
+To run/build client for web:
+```
+yarn run web:start
+```
+```
+yarn run web:build
+```
+To run client for mobile:
+```
+yarn run android
+```
+```
+yarn run ios
+```
+
+## License
 
 qrdolphin is open source software [licensed as MIT](https://github.com/kanamui/qrdolphin/blob/main/LICENSE).
