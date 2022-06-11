@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Switch,
   useColorMode,
@@ -8,6 +8,7 @@ import {
   extendTheme,
   theme as nbTheme
 } from 'native-base';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Splash from './screens/Splash';
@@ -53,6 +54,22 @@ const Stack = createNativeStackNavigator();
 }
 
 const App = () => {
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      const iconFontStyles = `@font-face {
+          src: url(${require('react-native-vector-icons/Fonts/Ionicons.ttf')});
+          font-family: "Ionicons";
+        }`;
+
+      // Create stylesheet
+      const style = document.createElement('style');
+      style.appendChild(document.createTextNode(iconFontStyles));
+
+      // Inject stylesheet
+      document.head.appendChild(style);
+    }
+  }, []);
+
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>

@@ -19,9 +19,7 @@ import {
   Box,
   ScrollView
 } from 'native-base';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import IconGoogle from '../components/IconGoogle';
 import IconFacebook from '../components/IconFacebook';
 
@@ -128,8 +126,8 @@ export function SignInForm({ props }) {
                         <Icon
                           size="4"
                           color="coolGray.400"
-                          as={Entypo}
-                          name={showPass ? "eye-with-line" : "eye"}
+                          as={Ionicons}
+                          name={showPass ? "eye-off-outline" : "eye-outline"}
                         />
                       }
                     />
@@ -355,8 +353,8 @@ export default function SignIn(props) {
                   icon={
                     <Icon
                       size="6"
-                      as={AntDesign}
-                      name="arrowleft"
+                      as={Ionicons}
+                      name="arrow-back"
                       color="coolGray.50"
                     />
                   }

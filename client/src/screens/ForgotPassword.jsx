@@ -16,7 +16,7 @@ import {
   Stack,
   Input,
 } from 'native-base';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ForgotPassword(props) {
   const [text, setText] = useState('');
@@ -72,8 +72,8 @@ export default function ForgotPassword(props) {
                 icon={
                   <Icon
                     size="6"
-                    as={AntDesign}
-                    name="arrowleft"
+                    as={Ionicons}
+                    name="arrow-back"
                     color="coolGray.50"
                   />
                 }
