@@ -16,18 +16,55 @@ import {
   Radio,
   Checkbox,
   Switch,
-  Button
+  Button,
+  Slider
 } from 'native-base';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
+
+const SampleAccordion = (props) => {
+  return (
+    <Box
+      shadow="4"
+      borderWidth="1"
+      borderColor="coolGray.300"
+      _light={{
+        bg: "white",
+        borderColor: "coolGray.300"
+      }}
+      _dark={{
+        bg: "blueGray.700",
+        borderColor: "coolGray.700"
+      }}
+    >
+      <HStack alignItems="center">
+        <Box
+          mr="2"
+          p="3"
+          _light={{
+            bg: "blueGray.200"
+          }}
+          _dark={{
+            bg: "blueGray.800"
+          }}
+        >
+          <Icon as={Ionicons} name={props.icon} />
+        </Box>
+        <HStack flex="1" justifyContent="space-between" alignItems="center" p="1">
+          <Text fontSize="md">{props.title}</Text>
+          <Icon as={Ionicons} name="chevron-down" mr="2" />
+        </HStack>
+      </HStack>
+    </Box>
+  );
+}
 
 const QRForm = () => {
   return (
     <>
       <Box>
         <VStack space="5" my="6">
-          <Text fontSize="lg">ENTER CONTENT</Text>
+          <SampleAccordion title="ENTER CONTENT" icon="md-document-text" />
           <FormControl>
             <Input
               isRequired
@@ -59,7 +96,7 @@ const QRForm = () => {
             md: "5",
           }}
         >
-          <Text fontSize="lg">SET COLOR</Text>
+          <SampleAccordion title="SET COLOR" icon="brush" />
           <Text
             bold
             fontSize="m"
@@ -104,20 +141,11 @@ const QRForm = () => {
               </Text>
             </Checkbox>
           </HStack>
-          <Text
-            bold
-            fontSize="m"
-            _dark={{
-              color: "coolGray.50",
-            }}
-            _light={{
-              color: "coolGray.800",
-            }}
-          >
+          <Text bold fontSize="m">
             Background Color
           </Text>
-          <Text fontSize="lg">ADD LOGO IMAGE</Text>
-          <Text fontSize="lg">CUSTOMIZE DESIGN</Text>
+          <SampleAccordion title="ADD LOGO IMAGE" icon="image-outline" />
+          <SampleAccordion title="CUSTOMIZE DESIGN" icon="qr-code-outline" />
         </VStack>
       </Box>
       <HStack
@@ -178,11 +206,8 @@ const Home = (props) => {
           <Hidden from="md">
             <HStack space="2" px="4" mt="4" mb="5" justifyContent="space-between" alignItems="center">
               <HStack alignItems="center">
-                <IconButton icon={<Icon size="sm" as={MaterialIcons} name="menu" color="white" />} />
-                <IconButton variant="unstyled" pl="0" icon={ <Icon size="6" as={MaterialCommunityIcons} name="dolphin" color="coolGray.50" />
-                  }
-                />
-                <HStack alignItems="center">
+                <IconButton icon={<Icon as={Ionicons} name="menu" color="white" />} />
+                <HStack alignItems="center" pl="2" pb="1">
                   <Text color="coolGray.50" fontSize="lg" bold>
                     qr
                   </Text>
@@ -192,19 +217,19 @@ const Home = (props) => {
                 </HStack>
               </HStack>
               <HStack>
-                <IconButton icon={<Icon as={MaterialIcons} name="search" size="sm" color="white" />} />
-                <IconButton icon={<Icon as={MaterialIcons} name="more-vert" size="sm" color="white" />} />
+                <IconButton icon={<Icon as={Ionicons} name="search" color="white" />} />
+                <IconButton icon={<Icon as={Ionicons} name="ellipsis-vertical" color="white" />} />
               </HStack>
             </HStack>
           </Hidden>
           <Hidden till="md">
-            <Center
+            <Box
               flex="1"
               _light={{
                 bg: "gray.100"
               }}
               _dark={{
-                bg: "blueGray.700"
+                bg: "coolGray.800"
               }}
               px={{
                 base: "4",
@@ -218,24 +243,20 @@ const Home = (props) => {
               }}
             >
               <QRForm />
-            </Center>
+            </Box>
           </Hidden>
           <Center
+            flex="1"
             py={{
               base: "6",
               md: "12",
-            }}
-            px={{
-              base: "4",
-              md: "10",
             }}
             _light={{
               bg: "white",
             }}
             _dark={{
-              bg: "coolGray.800",
+              bg: "blueGray.700",
             }}
-            flex="1"
             borderTopRightRadius={{
               md: "xl",
             }}
@@ -243,22 +264,29 @@ const Home = (props) => {
               md: "xl",
             }}
           >
-            <Image
-              h="24"
-              size="80"
-              alt="NativeBase Startup+ "
-              resizeMode={"contain"}
-              source={require("../components/qr-code.png")}
-            />
-            <HStack justifyContent="space-between" alignItems="center">
-              <Button.Group isAttached colorScheme="blue" mx={{
-                  base: "auto",
-                  md: 0
-                }} size="lg">
-                <Button>Generate</Button>
-                <Button variant="outline">Download</Button>
-              </Button.Group>
-            </HStack>
+            <VStack>
+              <Image
+                size="80"
+                alt="QR Code"
+                resizeMode={"contain"}
+                source={require("../components/qr-code.png")}
+              />
+              <Slider defaultValue={50} size="lg" mt="6">
+                <Slider.Track>
+                  <Slider.FilledTrack />
+                </Slider.Track>
+                <Slider.Thumb />
+              </Slider>
+              <HStack flex="1" mt="6" justifyContent="space-between" alignItems="center">
+                <Button colorScheme="green" size="lg">Create QR Code</Button>
+                <Button size="lg">Download PNG</Button>
+              </HStack>
+              <HStack flex="1" mt="3" alignItems="center">
+                <Button size="lg" px="6" variant="outline" borderColor="darkBlue.500">.SVG</Button>
+                <Button size="lg" px="6" mx="2" variant="outline" borderColor="darkBlue.500">.PDF</Button>
+                <Button size="lg" px="6" variant="outline" borderColor="darkBlue.500">.EPS</Button>
+              </HStack>
+            </VStack>
           </Center>
         </Stack>
       </Center>
