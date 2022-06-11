@@ -11,6 +11,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Splash from './screens/Splash';
+import Home from './screens/Home';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 import ForgotPassword from './screens/ForgotPassword';
@@ -55,11 +56,12 @@ const App = () => {
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Splash" component={Splash} />
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Navigator screenOptions={{headerShown: false}} >
+          <Stack.Screen name="Splash" component={Splash} options={{ title: '' }} />
+          <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />
+          <Stack.Screen name="SignIn" component={SignIn} options={{ title: 'Sign In' }} />
+          <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Sign Up' }}/>
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ title: 'Forgot Password' }} />
         </Stack.Navigator>
       </NavigationContainer>
       <ToggleDarkMode />

@@ -57,7 +57,6 @@ const Splash = ({ navigation }) => {
               <Button
                 variant="outline"
                 w="100%"
-                mb="2"
                 size="lg"
                 borderRadius="4"
                 _text={{
@@ -68,6 +67,22 @@ const Splash = ({ navigation }) => {
                 }}
                 _dark={{
                   bg: 'white'
+                }}
+                onPress={() => {
+                  navigation.navigate('Home')
+                }}
+              >
+                HOME
+              </Button>
+              <Button
+                variant="outline"
+                my="2"
+                w="100%"
+                size="lg"
+                borderRadius="4"
+                _text={{
+                  color: "white",
+                  fontWeight: "medium",
                 }}
                 onPress={() => {
                   navigation.navigate('SignIn')
@@ -115,13 +130,33 @@ const Splash = ({ navigation }) => {
                 source={require("../components/logo-full.png")}
               />
               <Button
-                bg="white"
                 variant="outline"
                 w="100%"
-                mb="2"
                 size="lg"
                 borderRadius="4"
                 _text={{
+                  fontWeight: "medium",
+                }}
+                _light={{
+                  bg: 'white'
+                }}
+                _dark={{
+                  bg: 'white'
+                }}
+                onPress={() => {
+                  navigation.navigate('Home')
+                }}
+              >
+                HOME
+              </Button>
+              <Button
+                variant="outline"
+                my="2"
+                w="100%"
+                size="lg"
+                borderRadius="4"
+                _text={{
+                  color: "white",
                   fontWeight: "medium",
                 }}
                 onPress={() => {
