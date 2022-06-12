@@ -179,6 +179,34 @@ const Home = (props) => {
           bg: "coolGray.900",
         }}
       />
+      <HStack
+        py="5"
+        space="2" px="4"
+        justifyContent="space-between"
+        alignItems="center"
+        _dark={{
+          bg: "darkBlue.900",
+        }}
+        _light={{
+          bg: "primary.800",
+        }}
+      >
+        <HStack alignItems="center">
+          <IconButton icon={<Icon as={Ionicons} name="menu" color="white" />} />
+          <HStack alignItems="center" pl="2" pb="1">
+            <Text color="coolGray.50" fontSize="lg" bold>
+              qr
+            </Text>
+            <Text color="coolGray.50" fontSize="lg">
+              dolphin
+            </Text>
+          </HStack>
+        </HStack>
+        <HStack>
+          <IconButton icon={<Icon as={Ionicons} name="search" color="white" />} />
+          <IconButton icon={<Icon as={Ionicons} name="ellipsis-vertical" color="white" />} />
+        </HStack>
+      </HStack>
       <Center
         my="auto"
         _dark={{
@@ -203,25 +231,6 @@ const Home = (props) => {
             md: "none",
           }}
         >
-          <Hidden from="md">
-            <HStack space="2" px="4" mt="4" mb="5" justifyContent="space-between" alignItems="center">
-              <HStack alignItems="center">
-                <IconButton icon={<Icon as={Ionicons} name="menu" color="white" />} />
-                <HStack alignItems="center" pl="2" pb="1">
-                  <Text color="coolGray.50" fontSize="lg" bold>
-                    qr
-                  </Text>
-                  <Text color="coolGray.50" fontSize="lg">
-                    dolphin
-                  </Text>
-                </HStack>
-              </HStack>
-              <HStack>
-                <IconButton icon={<Icon as={Ionicons} name="search" color="white" />} />
-                <IconButton icon={<Icon as={Ionicons} name="ellipsis-vertical" color="white" />} />
-              </HStack>
-            </HStack>
-          </Hidden>
           <Hidden till="md">
             <Box
               flex="1"
