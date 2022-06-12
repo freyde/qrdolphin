@@ -131,6 +131,7 @@ const Splash = ({ navigation }) => {
               />
               <Button
                 variant="outline"
+                mb="2"
                 w="100%"
                 size="lg"
                 borderRadius="4"
@@ -151,7 +152,23 @@ const Splash = ({ navigation }) => {
               </Button>
               <Button
                 variant="outline"
-                my="2"
+                mb="2"
+                w="100%"
+                size="lg"
+                borderRadius="4"
+                _text={{
+                  color: "white",
+                  fontWeight: "medium",
+                }}
+                onPress={() => {
+                  navigation.navigate('Gallery')
+                }}
+              >
+                GALLERY
+              </Button>
+              <Button
+                variant="outline"
+                mb="2"
                 w="100%"
                 size="lg"
                 borderRadius="4"

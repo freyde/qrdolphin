@@ -119,7 +119,7 @@ export default function LeftPanel({ navigation }) {
   return (
     <>
       <Hidden till="md">
-        <Box w={64} _light={{ bg: "gray.100" }} _dark={{ bg: "coolGray.800" }} overflow="hidden">
+        <Box w={64} _light={{ bg: "primary.600" }} _dark={{ bg: "coolGray.800" }} overflow="hidden">
           <VStack justifyContent="center" mx="auto" mt="8" mb="4" space="2">
             <Avatar
               alignSelf="center"

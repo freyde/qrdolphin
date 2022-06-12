@@ -75,9 +75,9 @@ const App = () => {
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}} >
-          <Stack.Screen name="Gallery" component={Gallery} />
           <Stack.Screen name="Splash" component={Splash} options={{ title: '' }} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Gallery" component={Gallery} />
           <Stack.Screen name="SignIn" component={SignIn} options={{ title: 'Sign In' }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Sign Up' }}/>
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ title: 'Forgot Password' }} />
